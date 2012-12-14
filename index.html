@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
-<html manifest="cache.manifest">
+<html>
   <head>
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=2.0"/>
+    <meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="apple-touch-icon" href="icon.jpeg"/>
     <link rel="apple-touch-startup-image" href="icon.jpeg" />
-    <link href='style.css' rel='stylesheet'/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript">
         // Get a list of articles in some magic way
         var articles = [{"title" : "Gaddafis Last Stand",
@@ -53,6 +53,11 @@ Rebecca Black herself wants to record a duet with Justin Bieber. 'I have Bieber 
 
         // Get the templates in some magic way
         var templates = [{"code" : "<div class='header'></div><div class='maincolumn'><div class='element teaser'><h1>{title}</h1><p class='lead'>{lead}</p></div><div class='container'><div class='element article'><div class='dateLine'>{?author}By <span class='author'>{author}</span><br />{/author}{?date}<span class='date'>Published: {date}</span>{/date}</div><div class='articleBody'>{body|s}</div></div></div></div><div class='sidebar'>{?imageUrl}<img src='{imageUrl}'>{/imageUrl}</div>", "name" : "article"}];
+
+          var article_from_internet = $.get("http://172.31.254.237:8081/content-hub/model-service/contentid/1.100", function(data) {
+          articles[0].body = data;
+          alert('Load was performed.');
+   });
     </script>
     <style>
       html, body {
@@ -69,6 +74,15 @@ Rebecca Black herself wants to record a duet with Justin Bieber. 'I have Bieber 
 
       #slider ul li {
         height: 100%;
+        display: block;
+        margin: 0;
+        padding: 0;
+      }
+
+      #slider ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
       }
 
       .article .articleBody p {
@@ -88,7 +102,6 @@ Rebecca Black herself wants to record a duet with Justin Bieber. 'I have Bieber 
       div.header {
         background-image: url(header.png);
         height: 91px;
-        width: 745px;
       }
 
       .article .lead {
@@ -113,7 +126,6 @@ Rebecca Black herself wants to record a duet with Justin Bieber. 'I have Bieber 
     </style>
   </head>
   <body id='bootstrap'>
-   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="swipe.js"></script>
     <script type="text/javascript" src="dust.js"></script>
     <script type="text/javascript">
@@ -126,7 +138,7 @@ Rebecca Black herself wants to record a duet with Justin Bieber. 'I have Bieber 
         // Add a list of articles to the body tag
         var slider = $("<div id='slider' class'swipe'><ul></ul></div>");
         for(var i = 0; i < articles.length; i++) {
-          var frame = $("<li style='display:block'><div class='article'></div></li>");
+          var frame = $("<li style='display:block'></li>");
 
           dust.render("article", articles[i], function(err, out) {
             $(frame).append(out);
